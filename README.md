@@ -88,6 +88,77 @@
 
 # コード例
 
+1. firebaseをインストール
+```zh
+npm install firebase 
+```
+
+2. firebase.tsで初期化を実施
+
+```ts
+import { initializeApp } from "firebase/app";
+import {getAuth, GoogleAuthProvider} from "firebase/auth"
+
+const firebaseConfig = {
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app)
+const provider = new GoogleAuthProvider()
+
+export {auth, provider}
+```
+
+3. LoginページでSignInWithPopUpを呼び出す
+
+```tsx
+export const Login = () => {
+    const handleLogin = () => {
+        signInWithPopup(auth, provider).catch((error) => {alert(error)});
+    }
+    return <><button onClick={handleLogin}>ログインする</button></>
+}
+```
+
+4. App.tsxでログイン状態の監視(onAuthStateChanged)をする
+
+```tsx
+const navigate = useNavigate()
+useEffect(() => {
+    auth.onAuthStateChanged(loginUser => {
+        console.log(loginUser)
+        if (loginUser) {
+            navigate('/personal')
+        } else {
+            navigate('login')
+        }
+    })
+}, []);
+
+```
+
+5. ログアウト時はsignoutメソッドを呼び出す
+
+```tsx
+export const PersonalPage = () => {
+    const handleLogout = () => {
+        signOut(auth)
+    }
+    return <>
+        <div>PersonalPageです</div>
+        <button onClick={handleLogout}>ログアウトする</button>
+    </>
+}
+```
+
 # 参考
 - [Firebaseログイン画面](https://firebase.google.com/?hl=ja)
 - [Firebaseドキュメント](https://firebase.google.com/docs/auth?hl=ja)
+- [ロゴガイドライン24年3月現在](https://developers.google.com/identity/branding-guidelines?fbclid=IwAR0oyedruG1mHbETsSGIh-w1cIUU7ya4y2BTXVvR1fezUuR6nAHz_H3yL2s&hl=ja)
+
