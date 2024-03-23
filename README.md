@@ -7,7 +7,7 @@
 
 - [Firebaseでの認証登録](#Firebaseでの認証登録)
 - [コード例](#コード例)
-
+- [番外：Githubでのログイン](番外：Githubでのログイン)
 
 - [参考](#参考)
 
@@ -156,6 +156,18 @@ export const PersonalPage = () => {
     </>
 }
 ```
+
+# 番外：Githubでのログイン
+
+1. GithubでAppの登録
+- Githubのいつものページへ移動
+- setting -> Developper settings -> OAuthApps -> new Auth Apps
+- AppのURLは適当に、コールバックURLはfirebase側のプロバイダ選んだ際に出てくるやつ
+
+2. firebaseでプロバイダ登録
+- 上記のクライアントID、シークレットIDを入れて保存したら有効化される
+
+3. コード例はfirebase.tsとLogin.tsx参照のこと
 
 # 参考
 - [Firebaseログイン画面](https://firebase.google.com/?hl=ja)
